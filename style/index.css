@@ -1,0 +1,31 @@
+#booking{
+    position: fixed;
+    top: 25%;
+    left: 25%;
+    width: 50%;
+    z-index: 99999;
+    border: solid lightgrey;
+}
+
+#hall{
+    padding: 1%;
+    margin: 1%;
+    border: solid lightgrey;
+}
+.place{
+    display: inline-block;
+    width: 30px;
+    background-color: lightgrey;
+}
+
+div[data-state="free"]{
+    background-color: lightgrey;
+}
+
+div[data-state="chosen"]{
+    background-color: lightgreen;
+}
+
+div[data-state="booked"]{
+    background-color: lightcoral;
+}
