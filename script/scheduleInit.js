@@ -49,6 +49,7 @@ function updateSchedule() {
         name.innerText = movies[i].filmInfo.name;
         time.innerText = "Time: " + movies[i].date.toLocaleString("ru", timeOptions);
         bookButton.innerText = "book";
+        bookButton.className = "bookButton";
 
         bookButton.setAttribute("data-date", movies[i].date);
 
@@ -59,14 +60,23 @@ function updateSchedule() {
         schedule.appendChild(li);
 
     }
-    schedule.addEventListener("click", (event) => {
-        if (event.target.tagName === "BUTTON") {
-            //open modal for booking
-            // console.log(storage.getItem(event.target.dataset.date));
-        }
-    });
+
+
 }
 
 initDateInput();
 updateCurrentDate(today);
 updateSchedule();
+
+schedule.addEventListener("click", (event) => {
+    if (event.target.className === "bookButton") {
+        // open modal for booking
+        let date = new Date (event.target.dataset.date);
+        let item = storage.getItem(date);
+        let sessionInfo = JSON.parse(item);
+        let bookingDiv = document.createElement("div");
+        bookingDiv.id = "booking";
+        bookingDiv.innerHTML = getBookingDiv(date, sessionInfo);
+        document.body.appendChild(bookingDiv);
+    }
+});

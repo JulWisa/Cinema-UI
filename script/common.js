@@ -35,6 +35,6 @@ function getFormattedDate(date) {
 
 //Converts date to string like "hh:mm, day, date month year"
 function getLocaleDateTime(date) {
-    let result = date.toISOString().substr(11, 5) + ", " +date.toLocaleDateString("ru", dayOptions);
+    let result = date.toLocaleString().substr(12, 5) + ", " +date.toLocaleDateString("ru", dayOptions);
     return result;
 }

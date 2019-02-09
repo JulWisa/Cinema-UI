@@ -1,12 +1,5 @@
-//delete it - for test
-let date = new Date(2019, 1, 9, 16, 0, 0);
-sessionInfo = JSON.parse(storage.getItem(date));
-
-//
-
-function getBookingDiv(sessionInfo) {
+function getBookingDiv(date, sessionInfo) {
     return `
-    <div id="booking">
     <h3>Booking</h3>
     <p>${sessionInfo.name}</p>
     <p>${getLocaleDateTime(date)}</p>
@@ -14,10 +7,9 @@ function getBookingDiv(sessionInfo) {
     <span>screen</span>
     <hr>
     ${getHallDiv(sessionInfo.booked).outerHTML}
-    <button>save</button>
-    <button>cancel</button>
+    <button onclick="save()">save</button>
+    <button onclick="cancel()">cancel</button>
     </footer>
-    </div>
     `;
 }
 
@@ -42,4 +34,7 @@ function getHallDiv(booked) {
     return hallDiv;
 }
 
-document.body.innerHTML += getBookingDiv(sessionInfo);
+function cancel() {
+    let booking = document.getElementById("booking");
+    document.body.removeChild(booking);
+}
