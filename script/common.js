@@ -1,6 +1,12 @@
 const rowCounter = 10;
 const placeCounter = 16;
 
+const placeState = {
+    booked: "booked",
+    free: "free",
+    chosen: "chosen"
+};
+
 const hall = [];
 for(let i = 0; i < rowCounter; i++){
     hall[i] = [];
@@ -24,5 +30,11 @@ const timeOptions = {
 //Converts date to string like "yyyy-mm-dd"
 function getFormattedDate(date) {
     let result = date.toISOString().substr(0, 10);
+    return result;
+}
+
+//Converts date to string like "hh:mm, day, date month year"
+function getLocaleDateTime(date) {
+    let result = date.toISOString().substr(11, 5) + ", " +date.toLocaleDateString("ru", dayOptions);
     return result;
 }
