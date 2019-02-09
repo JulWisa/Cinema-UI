@@ -8,43 +8,15 @@
 <header>Cinema</header>
 <form id="dateForm">
     <label for="dateInput">Choose date:</label>
-    <input id="dateInput" name="date" type="date" value="2019-02-08" min="2019-02-02" max="2019-02-14"/>
+    <input id="dateInput" name="date" type="date"/>
 </form>
-<p id="day">February, 8</p>
+<p id="currentDate"></p>
 <ul id="schedule">
-    <li>
-        <p>FilmName</p>
-        <p>Time: 10:00</p>
-        <button>book</button>
-    </li>
-    <li>
-        <p>FilmName</p>
-        <p>Time: 12:00</p>
-        <button>book</button>
-    </li>
-    <li>
-        <p>FilmName</p>
-        <p>Time: 14:00</p>
-        <button>book</button>
-    </li>
-    <li>
-        <p>FilmName</p>
-        <p>Time: 16:00</p>
-        <button>book</button>
-    </li>
-    <li>
-        <p>FilmName</p>
-        <p>Time: 18:00</p>
-        <button>book</button>
-    </li>
-    <li>
-        <p>FilmName</p>
-        <p>Time: 20:00</p>
-        <button>book</button>
-    </li>
 </ul>
-<script src="script/generator.js"></script>
-<script src="script/localStorage.js"></script>
-<script src="script/app.js"></script>
+<script src="script/common.js" type="text/javascript"></script>
+<script src="script/generator.js" type="text/javascript"></script>
+<script src="script/localStorage.js" type="text/javascript"></script>
+<script src="script/scheduleInit.js" type="text/javascript"></script>
+<script src="script/app.js" type="text/javascript"></script>
 </body>
 </html>
