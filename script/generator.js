@@ -2,7 +2,7 @@ const start = 10;
 const step = 2;
 const count = 6;
 
-function generateMovies(number, startDate, filmInfo){
+function generateMovies(number, startDate, sessionInfo){
     let movies = [];
     let date = zeroizeTime(startDate);
 
@@ -10,7 +10,7 @@ function generateMovies(number, startDate, filmInfo){
         let newDate = new Date(date);
         movies.push({
             date: newDate,
-            filmInfo: filmInfo
+            sessionInfo: sessionInfo
         });
         if (! (i % count) && i > 0){
             date.setHours(date.getHours() + step * (count + 1));
