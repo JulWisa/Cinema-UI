@@ -1,6 +1,6 @@
 function getBookingDiv(date, sessionInfo) {
     return `
-        <div id="booking">
+        <div id="booking" data-date="${date}">
             <h3>Booking</h3>
             <p>${sessionInfo.name}</p>
             <p>${getLocaleDateTime(date)}</p>
@@ -16,7 +16,10 @@ function getBookingDiv(date, sessionInfo) {
 }
 
 function getHall(booked) {
-    return `<div onclick="handleBooking(event)"> ${booked.map(getRow).join('')} </div>`;
+    return `<div id="hall"
+                 onclick="handleBooking(event)"> 
+            ${booked.map(getRow).join('')}
+            </div>`;
 }
 
 function getRow(row, i) {
@@ -24,7 +27,7 @@ function getRow(row, i) {
                  data-row=${i + 1}>
             ${i + 1}
             ${row.map(getPlace).join('')}
-        </div>`;
+            </div>`;
 }
 
 function getPlace(isBooked, i) {
@@ -50,5 +53,32 @@ function cancel() {
 }
 
 function save() {
-
+    let hall = [];
+    let rows = $("#hall").children(".row");
+    for(let i = 0; i < rows.length; i++){
+        hall[i] = [];
+        let placesCollection = rows[i].children;
+        for(let j = 0; j < placesCollection.length; j++){
+            hall[i][j] = placesCollection[j].dataset.state;
+        }
+    }
+    let booked = mapToBookedArray(hall);
+    let key = document.getElementById("booking").dataset.date;
+    let value = storage.getItem(key);
+    let sessionInfo = JSON.parse(value);
+    sessionInfo.booked = booked;
+    value = JSON.stringify(sessionInfo);
+    storage.setItem(key, value);
 }
+
+function mapToBookedArray(hall) {
+    let booked = [];
+    hall.forEach((row, i) => {
+        booked[i] = [];
+        row.forEach((state, j) => {
+            booked[i][j] = !(state === placeState.free)
+        });
+    });
+    return booked;
+}
+
