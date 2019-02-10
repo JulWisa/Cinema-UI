@@ -1,3 +1,7 @@
+function cancel() {
+    $("#booking").remove();
+}
+
 function getBookingDiv(date, sessionInfo) {
     return `
         <div id="booking" data-date="${date}">
@@ -8,11 +12,20 @@ function getBookingDiv(date, sessionInfo) {
             <span>screen</span>
             <hr>
             ${getHall(sessionInfo.booked)}
-            <button onclick="save()">save</button>
-            <button onclick="close()">cancel</button>
+            <footer>
+            ${isActual(date) ? '<button onclick="save()">book</button>' : ''  }
+            <button onclick="cancel()">cancel</button>
             </footer>
         </div>
     `;
+}
+
+function isActual(date) {
+    return (new Date( date ).getTime() > new Date().getTime());
+}
+
+function getCurrentDateTime() {
+    return new Date( document.getElementById("booking").dataset.date);
 }
 
 function getHall(booked) {
@@ -39,7 +52,8 @@ function getPlace(isBooked, i) {
 }
 
 function handleBooking(event) {
-    if (event.target.className === "place"){
+    let date = getCurrentDateTime();
+    if (event.target.className === "place" && isActual(date)){
         let place = event.target;
         if (place.dataset.state === placeState.free)
             place.dataset.state = placeState.chosen;
@@ -48,16 +62,17 @@ function handleBooking(event) {
     }
 }
 
-function close() {
-    $("#booking").remove();
-}
-
 function save() {
-    let hall = getHallArray();
-    let booked = mapToBookedArray(hall);
-    let date = document.getElementById("booking").dataset.date;
-    updateStorage(date, booked);
-    close();
+    let date = getCurrentDateTime();
+    if ( !isActual(date) )
+        alert("You can't book tickets for this session anymore. Movie has already started");
+    else{
+        let hall = getHallArray();
+        let booked = mapToBookedArray(hall);
+        let date = document.getElementById("booking").dataset.date;
+        updateStorage(date, booked);
+    }
+    cancel();
 }
 
 function getHallArray(){
