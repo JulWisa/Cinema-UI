@@ -9,7 +9,7 @@ function getBookingDiv(date, sessionInfo) {
             <hr>
             ${getHall(sessionInfo.booked)}
             <button onclick="save()">save</button>
-            <button onclick="cancel()">cancel</button>
+            <button onclick="close()">cancel</button>
             </footer>
         </div>
     `;
@@ -48,11 +48,19 @@ function handleBooking(event) {
     }
 }
 
-function cancel() {
+function close() {
     $("#booking").remove();
 }
 
 function save() {
+    let hall = getHallArray();
+    let booked = mapToBookedArray(hall);
+    let date = document.getElementById("booking").dataset.date;
+    updateStorage(date, booked);
+    close();
+}
+
+function getHallArray(){
     let hall = [];
     let rows = $("#hall").children(".row");
     for(let i = 0; i < rows.length; i++){
@@ -62,13 +70,15 @@ function save() {
             hall[i][j] = placesCollection[j].dataset.state;
         }
     }
-    let booked = mapToBookedArray(hall);
-    let key = document.getElementById("booking").dataset.date;
-    let value = storage.getItem(key);
+    return hall;
+}
+
+function updateStorage(date, booked) {
+    let value = storage.getItem(date);
     let sessionInfo = JSON.parse(value);
     sessionInfo.booked = booked;
     value = JSON.stringify(sessionInfo);
-    storage.setItem(key, value);
+    storage.setItem(date, value);
 }
 
 function mapToBookedArray(hall) {
@@ -81,4 +91,3 @@ function mapToBookedArray(hall) {
     });
     return booked;
 }
-
