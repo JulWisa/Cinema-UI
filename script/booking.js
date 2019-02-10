@@ -1,40 +1,54 @@
 function getBookingDiv(date, sessionInfo) {
     return `
-    <h3>Booking</h3>
-    <p>${sessionInfo.name}</p>
-    <p>${getLocaleDateTime(date)}</p>
-    <hr>
-    <span>screen</span>
-    <hr>
-    ${getHallDiv(sessionInfo.booked).outerHTML}
-    <button onclick="save()">save</button>
-    <button onclick="cancel()">cancel</button>
-    </footer>
+        <div id="booking">
+            <h3>Booking</h3>
+            <p>${sessionInfo.name}</p>
+            <p>${getLocaleDateTime(date)}</p>
+            <hr>
+            <span>screen</span>
+            <hr>
+            ${getHall(sessionInfo.booked)}
+            <button onclick="save()">save</button>
+            <button onclick="cancel()">cancel</button>
+            </footer>
+        </div>
     `;
 }
 
-function getHallDiv(booked) {
-    let hallDiv = document.createElement("div");
-    hallDiv.id = "hall";
-    for (let row = 0; row < booked.length; row++) {
-        let rowDiv = document.createElement("div");
-        rowDiv.className = "row";
-        rowDiv.setAttribute("data-number", row + 1);
-        rowDiv.innerHTML += `<span>${row + 1}</span>`;
-        for (let place = 1; place <= booked[row].length; place++) {
-            let placeDiv = document.createElement("div");
-            placeDiv.className = "place";
-            placeDiv.setAttribute("data-place", place);
-            placeDiv.setAttribute("data-state", booked[row][place] ? placeState.booked : placeState.free);
-            placeDiv.innerText = place;
-            rowDiv.appendChild(placeDiv);
-        }
-        hallDiv.appendChild(rowDiv);
+function getHall(booked) {
+    return `<div onclick="handleBooking(event)"> ${booked.map(getRow).join('')} </div>`;
+}
+
+function getRow(row, i) {
+    return `<div class="row"
+                 data-row=${i + 1}>
+            ${i + 1}
+            ${row.map(getPlace).join('')}
+        </div>`;
+}
+
+function getPlace(isBooked, i) {
+    return `<div class="place" 
+                 data-place=${i + 1}
+                 data-state=${isBooked ? placeState.booked : placeState.free}>
+            ${i + 1}
+            </div>`;
+}
+
+function handleBooking(event) {
+    if (event.target.className === "place"){
+        let place = event.target;
+        if (place.dataset.state === placeState.free)
+            place.dataset.state = placeState.chosen;
+        else if (place.dataset.state === placeState.chosen)
+            place.dataset.state = placeState.free;
     }
-    return hallDiv;
 }
 
 function cancel() {
-    let booking = document.getElementById("booking");
-    document.body.removeChild(booking);
+    $("#booking").remove();
+}
+
+function save() {
+
 }

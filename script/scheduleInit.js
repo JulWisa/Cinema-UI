@@ -58,10 +58,7 @@ function updateSchedule() {
         li.appendChild(bookButton);
 
         schedule.appendChild(li);
-
     }
-
-
 }
 
 initDateInput();
@@ -70,13 +67,10 @@ updateSchedule();
 
 schedule.addEventListener("click", (event) => {
     if (event.target.className === "bookButton") {
-        // open modal for booking
         let date = new Date (event.target.dataset.date);
-        let item = storage.getItem(date);
-        let sessionInfo = JSON.parse(item);
-        let bookingDiv = document.createElement("div");
-        bookingDiv.id = "booking";
-        bookingDiv.innerHTML = getBookingDiv(date, sessionInfo);
-        document.body.appendChild(bookingDiv);
+        let storageItem = storage.getItem(date);
+        let sessionInfo = JSON.parse(storageItem);
+
+        $("body").append(getBookingDiv(date, sessionInfo));
     }
 });
