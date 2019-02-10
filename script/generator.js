@@ -29,3 +29,5 @@ function zeroizeTime(dateTime) {
     zeroDate.setSeconds(0);
     return zeroDate;
 }
+
+export { generateMovies, count}

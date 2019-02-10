@@ -1,3 +1,7 @@
+import $ from "jquery";
+import {getLocaleDateTime, placeState} from "./common";
+import {storage} from "./app";
+
 function cancel() {
     $("#booking").remove();
 }
@@ -13,8 +17,8 @@ function getBookingDiv(date, sessionInfo) {
             <hr>
             ${getHall(sessionInfo.booked)}
             <footer>
-            ${isActual(date) ? '<button onclick="save()">book</button>' : ''  }
-            <button onclick="cancel()">cancel</button>
+            ${isActual(date) ? `<button id="saveButton">book</button>` : ''  }
+            <button id="cancelButton">cancel</button>
             </footer>
         </div>
     `;
@@ -29,8 +33,7 @@ function getCurrentDateTime() {
 }
 
 function getHall(booked) {
-    return `<div id="hall"
-                 onclick="handleBooking(event)"> 
+    return `<div id="hall">
             ${booked.map(getRow).join('')}
             </div>`;
 }
@@ -44,7 +47,7 @@ function getRow(row, i) {
 }
 
 function getPlace(isBooked, i) {
-    return `<div class="place" 
+    return `<div class="place"
                  data-place=${i + 1}
                  data-state=${isBooked ? placeState.booked : placeState.free}>
             ${i + 1}
@@ -106,3 +109,5 @@ function mapToBookedArray(hall) {
     });
     return booked;
 }
+
+export {getBookingDiv, save, cancel, handleBooking}

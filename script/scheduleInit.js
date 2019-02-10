@@ -1,8 +1,12 @@
+import {dayOptions, getFormattedDate, timeOptions} from "./common";
+import {storage} from "./app";
+import {count} from "./generator";
+
 let dateInput = document.getElementById("dateInput");
 let currentDateParagraph = document.getElementById("currentDate");
 let schedule = document.getElementById("schedule");
 let today = new Date();
-let currentDate = today;
+let currentDate = new Date();
 
 function updateCurrentDate(date) {
     currentDate = date;
@@ -18,7 +22,7 @@ function initDateInput() {
     maxDate.setDate(today.getDate() + 6);
     dateInput.max = getFormattedDate(maxDate);
 
-    dateInput.valueAsDate = today;
+    dateInput.valueAsDate = new Date();
     dateInput.onchange = function (event) {
         updateCurrentDate(new Date(event.target.valueAsDate));
         updateSchedule();
@@ -61,16 +65,4 @@ function updateSchedule() {
     }
 }
 
-initDateInput();
-updateCurrentDate(today);
-updateSchedule();
-
-schedule.addEventListener("click", (event) => {
-    if (event.target.className === "bookButton") {
-        let date = new Date (event.target.dataset.date);
-        let storageItem = storage.getItem(date);
-        let sessionInfo = JSON.parse(storageItem);
-
-        $("body").append(getBookingDiv(date, sessionInfo));
-    }
-});
+export {initDateInput, updateSchedule, updateCurrentDate}

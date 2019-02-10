@@ -38,3 +38,5 @@ function getLocaleDateTime(date) {
     let result = date.toLocaleString().substr(12, 5) + ", " +date.toLocaleDateString("ru", dayOptions);
     return result;
 }
+
+export { placeState, hall, dayOptions, timeOptions, getFormattedDate, getLocaleDateTime }
