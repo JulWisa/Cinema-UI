@@ -41,8 +41,8 @@ function getHall(booked) {
 function getRow(row, i) {
     return `<div class="row"
                  data-row=${i + 1}>
-            ${i + 1}
             ${row.map(getPlace).join('')}
+            ${i + 1}
             </div>`;
 }
 

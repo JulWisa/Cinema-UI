@@ -45,23 +45,26 @@ function updateSchedule() {
     let movies = getSessions(currentDate);
     schedule.innerHTML = "";
     for (let i = 0; i < count; i++) {
-        let li = document.createElement("li");
-        let name = document.createElement("p");
+        let card = document.createElement("div");
+        let name = document.createElement("h4");
         let time = document.createElement("p");
         let bookButton = document.createElement("button");
 
+        card.className = "card";
+
         name.innerText = movies[i].filmInfo.name;
         time.innerText = "Time: " + movies[i].date.toLocaleString("ru", timeOptions);
+
         bookButton.innerText = "book";
         bookButton.className = "bookButton";
 
         bookButton.setAttribute("data-date", movies[i].date);
 
-        li.appendChild(name);
-        li.appendChild(time);
-        li.appendChild(bookButton);
+        card.appendChild(name);
+        card.appendChild(time);
+        card.appendChild(bookButton);
 
-        schedule.appendChild(li);
+        schedule.appendChild(card);
     }
 }
 
