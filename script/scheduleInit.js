@@ -10,7 +10,7 @@ let currentDate = new Date();
 
 function updateCurrentDate(date) {
     currentDate = date;
-    currentDateParagraph.innerText = date.toLocaleString("ru", dayOptions);
+    currentDateParagraph.innerText = date.toLocaleString("en", dayOptions);
 }
 
 function initDateInput() {
@@ -53,7 +53,7 @@ function updateSchedule() {
         card.className = "card";
 
         name.innerText = movies[i].filmInfo.name;
-        time.innerText = "Time: " + movies[i].date.toLocaleString("ru", timeOptions);
+        time.innerText = "Time: " + movies[i].date.toLocaleString("en", timeOptions);
 
         bookButton.innerText = "book";
         bookButton.className = "bookButton";
