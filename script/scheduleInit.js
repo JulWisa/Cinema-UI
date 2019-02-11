@@ -1,15 +1,17 @@
 import {dayOptions, getFormattedDate, timeOptions} from "./common";
+import {cancel, getBookingDiv, handleBooking, save} from "./booking";
 import {count} from "./generator";
+import $ from "jquery";
 
 let dateInput = document.getElementById("dateInput");
-let currentDateParagraph = document.getElementById("currentDate");
-let schedule = document.getElementById("schedule");
 let today = new Date();
 let currentDate = new Date();
 
-function updateCurrentDate(date) {
-    currentDate = date;
-    currentDateParagraph.innerText = date.toLocaleString("en", dayOptions);
+function initMain() {
+    initDateInput();
+    updateCurrentDate(today);
+    updateSchedule();
+    addListener();
 }
 
 function initDateInput() {
@@ -28,43 +30,61 @@ function initDateInput() {
     }
 }
 
+function updateCurrentDate(date) {
+    currentDate = date;
+    $("#currentDate").text(`${date.toLocaleString("en", dayOptions)}`);
+}
+
+function updateSchedule() {
+    let sessions = getSessions(currentDate);
+    $("#schedule").empty();
+    for (let i = 0; i < count; i++) {
+        let card = `
+                   <div class="card">
+                        <h4>${sessions[i].sessionInfo.name}</h4>
+                        <p>Time: ${sessions[i].date.toLocaleString("en", timeOptions)}</p>
+                        <button class="bookButton" data-date="${sessions[i].date}">book</button>
+                   </div>
+        `;
+        $("#schedule").append(card);
+    }
+}
+
 function getSessions(date) {
     let sessions = [];
     for (let key in localStorage) {
         if (new Date(key).getDate() === date.getDate())
             sessions.push({
                 date: new Date(key),
-                filmInfo: JSON.parse(localStorage.getItem(key))
+                sessionInfo: JSON.parse(localStorage.getItem(key))
             });
     }
     return sessions;
 }
 
-function updateSchedule() {
-    let movies = getSessions(currentDate);
-    schedule.innerHTML = "";
-    for (let i = 0; i < count; i++) {
-        let card = document.createElement("div");
-        let name = document.createElement("h4");
-        let time = document.createElement("p");
-        let bookButton = document.createElement("button");
+function addListener() {
+    document.getElementById("schedule").addEventListener("click", (event) => {
+        if (event.target.className === "bookButton") {
+            let date = new Date(event.target.dataset.date);
+            let storageItem = localStorage.getItem(date);
+            let sessionInfo = JSON.parse(storageItem);
 
-        card.className = "card";
+            $("body").append(getBookingDiv(date, sessionInfo));
 
-        name.innerText = movies[i].filmInfo.name;
-        time.innerText = "Time: " + movies[i].date.toLocaleString("en", timeOptions);
+            if (document.getElementById("saveButton")) {
+                document.getElementById("saveButton").addEventListener("click", () => {
+                    save();
+                });
+            }
 
-        bookButton.innerText = "book";
-        bookButton.className = "bookButton";
-
-        bookButton.setAttribute("data-date", movies[i].date);
-
-        card.appendChild(name);
-        card.appendChild(time);
-        card.appendChild(bookButton);
-
-        schedule.appendChild(card);
-    }
+            document.getElementById("cancelButton").addEventListener("click", () => {
+                cancel();
+            });
+            document.getElementById("hall").addEventListener("click", (event) => {
+                handleBooking(event);
+            })
+        }
+    });
 }
 
-export {initDateInput, updateSchedule, updateCurrentDate}
+export {initMain}
