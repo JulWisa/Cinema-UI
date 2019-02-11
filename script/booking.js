@@ -1,10 +1,6 @@
 import $ from "jquery";
 import {getLocaleDateTime, placeState} from "./common";
 
-function cancel() {
-    $("#booking").remove();
-}
-
 function getBookingDiv(date, sessionInfo) {
     return `
         <div id="booking" data-date="${date}">
@@ -21,14 +17,6 @@ function getBookingDiv(date, sessionInfo) {
             </footer>
         </div>
     `;
-}
-
-function isActual(date) {
-    return (new Date( date ).getTime() > new Date().getTime());
-}
-
-function getCurrentDateTime() {
-    return new Date( document.getElementById("booking").dataset.date);
 }
 
 function getHall(booked) {
@@ -53,15 +41,8 @@ function getPlace(isBooked, i) {
             </div>`;
 }
 
-function handleBooking(event) {
-    let date = getCurrentDateTime();
-    if (event.target.className === "place" && isActual(date)){
-        let place = event.target;
-        if (place.dataset.state === placeState.free)
-            place.dataset.state = placeState.chosen;
-        else if (place.dataset.state === placeState.chosen)
-            place.dataset.state = placeState.free;
-    }
+function cancel() {
+    $("#booking").remove();
 }
 
 function save() {
@@ -77,6 +58,25 @@ function save() {
     cancel();
 }
 
+function handleBooking(event) {
+    let date = getCurrentDateTime();
+    if (event.target.className === "place" && isActual(date)){
+        let place = event.target;
+        if (place.dataset.state === placeState.free)
+            place.dataset.state = placeState.chosen;
+        else if (place.dataset.state === placeState.chosen)
+            place.dataset.state = placeState.free;
+    }
+}
+
+function isActual(date) {
+    return (new Date( date ).getTime() > new Date().getTime());
+}
+
+function getCurrentDateTime() {
+    return new Date(document.getElementById("booking").dataset.date);
+}
+
 function getHallArray(){
     let hall = [];
     let rows = $("#hall").children(".row");
@@ -90,14 +90,6 @@ function getHallArray(){
     return hall;
 }
 
-function updateStorage(date, booked) {
-    let value = localStorage.getItem(date);
-    let sessionInfo = JSON.parse(value);
-    sessionInfo.booked = booked;
-    value = JSON.stringify(sessionInfo);
-    localStorage.setItem(date, value);
-}
-
 function mapToBookedArray(hall) {
     let booked = [];
     hall.forEach((row, i) => {
@@ -107,6 +99,13 @@ function mapToBookedArray(hall) {
         });
     });
     return booked;
+}
+function updateStorage(date, booked) {
+    let value = localStorage.getItem(date);
+    let sessionInfo = JSON.parse(value);
+    sessionInfo.booked = booked;
+    value = JSON.stringify(sessionInfo);
+    localStorage.setItem(date, value);
 }
 
 export {getBookingDiv, save, cancel, handleBooking}
