@@ -1,5 +1,4 @@
 import {dayOptions, getFormattedDate, timeOptions} from "./common";
-import {storage} from "./app";
 import {count} from "./generator";
 
 let dateInput = document.getElementById("dateInput");
@@ -31,11 +30,11 @@ function initDateInput() {
 
 function getSessions(date) {
     let sessions = [];
-    for (let key in storage) {
+    for (let key in localStorage) {
         if (new Date(key).getDate() === date.getDate())
             sessions.push({
                 date: new Date(key),
-                filmInfo: JSON.parse(storage.getItem(key))
+                filmInfo: JSON.parse(localStorage.getItem(key))
             });
     }
     return sessions;

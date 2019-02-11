@@ -1,6 +1,5 @@
 import $ from "jquery";
 import {getLocaleDateTime, placeState} from "./common";
-import {storage} from "./app";
 
 function cancel() {
     $("#booking").remove();
@@ -92,11 +91,11 @@ function getHallArray(){
 }
 
 function updateStorage(date, booked) {
-    let value = storage.getItem(date);
+    let value = localStorage.getItem(date);
     let sessionInfo = JSON.parse(value);
     sessionInfo.booked = booked;
     value = JSON.stringify(sessionInfo);
-    storage.setItem(date, value);
+    localStorage.setItem(date, value);
 }
 
 function mapToBookedArray(hall) {

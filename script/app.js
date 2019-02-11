@@ -1,14 +1,13 @@
-import initStorage from "./localStorage";
+import {initStorage, reduceStorage} from "./localStorage";
 import {initDateInput, updateCurrentDate, updateSchedule} from "./scheduleInit";
 import $ from "jquery";
 import {cancel, getBookingDiv, handleBooking, save} from "./booking";
 
-let storage = window.localStorage;
 let today = new Date();
 
 initStorage();
+reduceStorage();
 
-//schedule init
 initDateInput();
 updateCurrentDate(today);
 updateSchedule();
@@ -16,7 +15,7 @@ updateSchedule();
 schedule.addEventListener("click", (event) => {
     if (event.target.className === "bookButton") {
         let date = new Date(event.target.dataset.date);
-        let storageItem = storage.getItem(date);
+        let storageItem = localStorage.getItem(date);
         let sessionInfo = JSON.parse(storageItem);
 
         $("body").append(getBookingDiv(date, sessionInfo));
@@ -36,4 +35,4 @@ schedule.addEventListener("click", (event) => {
     }
 });
 
-export {storage, today}
+export {today}

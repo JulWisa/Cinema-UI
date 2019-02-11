@@ -1,9 +1,8 @@
 import {hall} from "./common"
-import {storage} from "./app";
 import {generateMovies} from "./generator";
 
-export default function initStorage() {
-    storage.clear();
+function initStorage() {
+    localStorage.clear();
 
     let sessionInfo = {
         name: "Super film",
@@ -14,9 +13,20 @@ export default function initStorage() {
     let movies = generateMovies(13 * 6, new Date(new Date().setDate(new Date().getDate() - 6)), sessionInfo, 10, 16);
 
     movies.forEach(movie => {
-        storage.setItem(movie.date, JSON.stringify(movie.sessionInfo));
+        localStorage.setItem(movie.date, JSON.stringify(movie.sessionInfo));
     });
 }
 
+function reduceStorage(){
+    let oldestDate = new Date();
+    oldestDate.setDate(new Date().getDate() - 6);
+    oldestDate = oldestDate.getTime();
 
+    for(let date in localStorage){
+        if (new Date(date).getTime() < oldestDate)
+            localStorage.removeItem(date);
+    }
+}
+
+export {reduceStorage, initStorage}
 
