@@ -4,7 +4,7 @@ import {getLocaleDateTime, placeState} from "./common";
 function getBookingDiv(date, sessionInfo) {
     return `
         <div id="booking" data-date="${date}">
-            <h3>Booking</h3>
+            <h3 class="cssans">Booking</h3>
             <p>${sessionInfo.name}</p>
             <p>${getLocaleDateTime(date)}</p>
             <hr>

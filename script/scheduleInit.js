@@ -2,6 +2,7 @@ import {dayOptions, getFormattedDate, timeOptions} from "./common";
 import {cancel, getBookingDiv, handleBooking, save} from "./booking";
 import {count} from "./generator";
 import $ from "jquery";
+import applyCssans from "./cssansInit";
 
 let dateInput = document.getElementById("dateInput");
 let today = new Date();
@@ -70,6 +71,8 @@ function addListener() {
             let sessionInfo = JSON.parse(storageItem);
 
             $("body").append(getBookingDiv(date, sessionInfo));
+
+            applyCssans();
 
             if (document.getElementById("saveButton")) {
                 document.getElementById("saveButton").addEventListener("click", () => {
